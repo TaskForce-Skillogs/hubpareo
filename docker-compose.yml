@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - YPAREO_BASE_URL=${YPAREO_BASE_URL}
+      - YPAREO_TOKEN=${YPAREO_TOKEN}
+      - PORT=3000
+    volumes:
+      - ./logs:/usr/src/app/logs
+    restart: unless-stopped

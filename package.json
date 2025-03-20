@@ -4,7 +4,12 @@
   "description": "api between hubspot and ypareo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "docker:build": "docker build -t hubspot-ypareo .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env hubspot-ypareo",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down"
   },
   "keywords": [],
   "author": "",
