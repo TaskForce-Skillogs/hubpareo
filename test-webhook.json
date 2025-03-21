@@ -1,0 +1,14 @@
+{
+    "objectId": 123456,
+    "properties": {
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "phone": "+33123456789",
+      "address": "123 Main Street",
+      "city": "Paris",
+      "zip": "75000",
+      "date_of_birth": "1990-01-15",
+      "gender": "male"
+    }
+  }
