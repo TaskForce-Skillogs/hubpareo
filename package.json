@@ -1,26 +1,31 @@
 {
   "name": "hubpareo",
   "version": "1.0.0",
-  "description": "api between hubspot and ypareo",
-  "main": "index.js",
+  "description": "API integration between HubSpot and YPareo",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "npx ts-node-dev --respawn src/index.ts",
     "docker:build": "docker build -t hubspot-ypareo .",
     "docker:run": "docker run -p 3000:3000 --env-file .env hubspot-ypareo",
     "docker:up": "docker compose up",
     "docker:down": "docker compose down"
   },
-  "keywords": [],
+  "keywords": ["hubspot", "ypareo", "webhook", "integration", "typescript"],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.8.4",
-    "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "@types/express": "^4.17.21",
+    "@types/node": "^18.19.3",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.2"
   }
 }
