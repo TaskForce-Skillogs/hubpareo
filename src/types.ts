@@ -4,14 +4,38 @@ export interface IHubSpotWebhook {
   properties: {
     firstname?: string;
     lastname?: string;
+    name?: string;
     email?: string;
     phone?: string;
+    mobilephone?: string;
     address?: string;
+    street?: string;
     city?: string;
     zip?: string;
+    postal_code?: string;
     date_of_birth?: string;
+    birthdate?: string;
     gender?: string;
     [key: string]: any;
+  };
+  object?: {
+    properties: {
+      firstname?: string;
+      lastname?: string;
+      name?: string;
+      email?: string;
+      phone?: string;
+      mobilephone?: string;
+      address?: string;
+      street?: string;
+      city?: string;
+      zip?: string;
+      postal_code?: string;
+      date_of_birth?: string;
+      birthdate?: string;
+      gender?: string;
+      [key: string]: any;
+    };
   };
   [key: string]: any;
 }

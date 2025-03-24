@@ -23,8 +23,13 @@ export function formatDate(dateString: string | undefined): string {
  * Transforms HubSpot webhook data to YPareo format
  */
 export function transformToYPareoFormat(hubspotData: IHubSpotWebhook): IYPareoCandidat {
-  // Get properties from the webhook
-  const properties = hubspotData.properties || {};
+  // Extract properties based on the webhook format
+  let properties = hubspotData.properties || {};
+  
+  // Handle different HubSpot webhook formats
+  if (hubspotData.object && hubspotData.object.properties) {
+    properties = hubspotData.object.properties;
+  }
   
   // Transform data to YPareo format
   return {

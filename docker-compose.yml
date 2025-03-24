@@ -1,7 +1,9 @@
-version: '3'
+# Docker Compose configuration
 services:
   app:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -15,4 +17,4 @@ services:
       - ./package.json:/usr/src/app/package.json
       - ./tsconfig.json:/usr/src/app/tsconfig.json
     restart: unless-stopped
-    command: npm run dev
+    command: npx ts-node-dev --respawn src/index.ts
