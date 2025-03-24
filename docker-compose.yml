@@ -10,5 +10,9 @@ services:
       - YPAREO_TOKEN=${YPAREO_TOKEN}
       - PORT=3000
     volumes:
+      - ./src:/usr/src/app/src
       - ./logs:/usr/src/app/logs
+      - ./package.json:/usr/src/app/package.json
+      - ./tsconfig.json:/usr/src/app/tsconfig.json
     restart: unless-stopped
+    command: npm run dev

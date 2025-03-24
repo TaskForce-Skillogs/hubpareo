@@ -4,12 +4,10 @@ FROM node:16-alpine
 WORKDIR /usr/src/app
 
 # Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
+# Install ALL dependencies, including devDependencies
 RUN npm install
-# If you're building your code for production
-# RUN npm ci --only=production
 
 # Bundle app source
 COPY . .
@@ -18,4 +16,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the application
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
