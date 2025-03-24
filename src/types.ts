@@ -1,4 +1,3 @@
-// HubSpot webhook data types
 export interface IHubSpotWebhook {
   objectId: number;
   properties: {
@@ -40,7 +39,6 @@ export interface IHubSpotWebhook {
   [key: string]: any;
 }
 
-// YPareo candidate data type
 export interface IYPareoCandidat {
   idSite: string;
   idSite2?: string;

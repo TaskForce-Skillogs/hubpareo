@@ -1,8 +1,6 @@
 import { IHubSpotWebhook, IYPareoCandidat } from './types';
 
-/**
- * Transforms a date from YYYY-MM-DD to DD/MM/YYYY format
- */
+
 export function formatDate(dateString: string | undefined): string {
   if (!dateString) return '';
   
@@ -19,31 +17,26 @@ export function formatDate(dateString: string | undefined): string {
   }
 }
 
-/**
- * Transforms HubSpot webhook data to YPareo format
- */
+
 export function transformToYPareoFormat(hubspotData: IHubSpotWebhook): IYPareoCandidat {
-  // Extract properties based on the webhook format
   let properties = hubspotData.properties || {};
   
-  // Handle different HubSpot webhook formats
   if (hubspotData.object && hubspotData.object.properties) {
     properties = hubspotData.object.properties;
   }
   
-  // Transform data to YPareo format
   return {
-    "idSite": "1", // Site ID from YPareo
+    "idSite": "1",
     "codeCiviliteApprenant": properties.gender === "male" ? 1 : 2,
     "nomApprenant": properties.lastname || properties.name || "Unknown",
     "prenomApprenant": properties.firstname || "Unknown",
-    "idNationalite": "250", // Default to French nationality
+    "idNationalite": "250",
     "adresse1Appr": properties.address || properties.street || "",
     "cpAppr": properties.zip || properties.postal_code || "",
     "villeAppr": properties.city || "",
     "tel1Appr": properties.phone || properties.mobilephone || "",
     "emailAppr": properties.email || "",
     "dateNaissance": formatDate(properties.date_of_birth || properties.birthdate),
-    "idFormationSouhait1": "123", // Map to appropriate formation ID
+    "idFormationSouhait1": "123",
   };
 }
