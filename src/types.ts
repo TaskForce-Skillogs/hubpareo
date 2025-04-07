@@ -1,16 +1,13 @@
 export interface IHubSpotWebhook {
-  code_postal_?: string | number;
   civilite: string;
   nationalite: string;
-  campus_souhaite?: string;
+  formation_souhaitee: string;
   prenom: string;
-  adresse_postale?: string;
   nom: string;
-  telephone_portable?: string;
-  email?: string;
-  zip?: string | number;
+  email: string;
+  zip: string;
   site: string;
-  address?: string;
+  address: string;
   lastname: string;
   firstname: string;
   birthDate: string;

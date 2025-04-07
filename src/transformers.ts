@@ -8,24 +8,22 @@ import {
 
 export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Promise<IYPareoCandidat> {
   
-  // Use utility functions to get mapped values
-  const siteId = await getSiteId(hubspotData.campus || hubspotData.site);
+  const siteId = await getSiteId(hubspotData.site);
   const nationalityId = await getNationalityId(hubspotData.nationality || hubspotData.country || hubspotData.pays);
-  const formationId = await getFormationId(hubspotData.formation_souhaitee || hubspotData.course || hubspotData.training);
-  const civiliteCode = mapGenderToCode(hubspotData.gender);
+  const formationId = await getFormationId(hubspotData.formation_souhaitee);
+  const civiliteCode = mapGenderToCode(hubspotData.civilite);
   
-  // Create YPareo candidate object
   return {
     "idSite": siteId,
     "codeCiviliteApprenant": civiliteCode,
-    "nomApprenant": hubspotData.lastname || hubspotData.name || "Unknown",
-    "prenomApprenant": hubspotData.firstname || "Unknown",
+    "nomApprenant": hubspotData.lastname,
+    "prenomApprenant": hubspotData.firstname,
     "idNationalite": nationalityId,
-    "adresse1Appr": hubspotData.address || hubspotData.street || "",
-    "cpAppr": hubspotData.zip || hubspotData.postal_code || "",
-    "villeAppr": hubspotData.city || "",
-    "tel1Appr": hubspotData.phone || hubspotData.mobilephone || "",
-    "emailAppr": hubspotData.email || "",
+    "adresse1Appr": hubspotData.address,
+    "cpAppr": hubspotData.zip,
+    "villeAppr": hubspotData.city,
+    "tel1Appr": hubspotData.phone,
+    "emailAppr": hubspotData.email,
     "dateNaissance": hubspotData.birthdate,
     "idFormationSouhait1": formationId,
   };
