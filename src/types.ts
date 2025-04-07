@@ -5,6 +5,7 @@ export interface IHubSpotWebhook {
   prenom: string;
   nom: string;
   email: string;
+  phone: string;
   zip: string;
   site: string;
   address: string;
@@ -31,7 +32,6 @@ export interface IYPareoCandidat {
   adresse3Appr?: string;
   adresse4Appr?: string;
   cpAppr: string;
-  villeAppr: string;
   idPays?: string;
   tel1Appr: string;
   tel2Appr?: string;
@@ -43,7 +43,6 @@ export interface IYPareoCandidat {
   idFormationSouhait1: string;
   idFormationSouhait2?: string;
   idFormationSouhait3?: string;
-  [key: string]: any;
 }
 
 export interface IYPareoCommune {

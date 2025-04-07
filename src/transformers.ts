@@ -21,10 +21,9 @@ export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Pro
     "idNationalite": nationalityId,
     "adresse1Appr": hubspotData.address,
     "cpAppr": hubspotData.zip,
-    "villeAppr": hubspotData.city,
     "tel1Appr": hubspotData.phone,
     "emailAppr": hubspotData.email,
-    "dateNaissance": hubspotData.birthdate,
+    "dateNaissance": hubspotData.birthDate,
     "idFormationSouhait1": formationId,
   };
 }
