@@ -1,4 +1,3 @@
-// src/index.ts
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import axios from 'axios';
@@ -34,7 +33,6 @@ app.post('/webhook', async (req: Request, res: Response) => {
     console.log('Données transformées pour YPareo:', JSON.stringify(ypareoCandidat, null, 2));
     
     if (process.env.NODE_ENV === 'production') {
-
       const response = await axios.post(
         `${YPAREO_BASE_URL}/r/v1/preinscription/candidat`,
         ypareoCandidat,
