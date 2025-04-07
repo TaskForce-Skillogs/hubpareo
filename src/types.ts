@@ -1,57 +1,19 @@
 export interface IHubSpotWebhook {
-  objectId: number;
-  properties: {
-    firstname?: string;
-    lastname?: string;
-    name?: string;
-    email?: string;
-    phone?: string;
-    mobilephone?: string;
-    address?: string;
-    street?: string;
-    city?: string;
-    zip?: string;
-    postal_code?: string;
-    date_of_birth?: string;
-    birthdate?: string;
-    gender?: string;
-    nationality?: string;
-    country?: string;
-    pays?: string;
-    campus?: string;
-    site?: string;
-    formation?: string;
-    course?: string;
-    training?: string;
-    [key: string]: any;
-  };
-  object?: {
-    properties: {
-      firstname?: string;
-      lastname?: string;
-      name?: string;
-      email?: string;
-      phone?: string;
-      mobilephone?: string;
-      address?: string;
-      street?: string;
-      city?: string;
-      zip?: string;
-      postal_code?: string;
-      date_of_birth?: string;
-      birthdate?: string;
-      gender?: string;
-      nationality?: string;
-      country?: string;
-      pays?: string;
-      campus?: string;
-      site?: string;
-      formation?: string;
-      course?: string;
-      training?: string;
-      [key: string]: any;
-    };
-  };
+  code_postal_?: string | number;
+  civilite: string;
+  nationalite: string;
+  campus_souhaite?: string;
+  prenom: string;
+  adresse_postale?: string;
+  nom: string;
+  telephone_portable?: string;
+  email?: string;
+  zip?: string | number;
+  site: string;
+  address?: string;
+  lastname: string;
+  firstname: string;
+  birthDate: string;
   [key: string]: any;
 }
 
@@ -136,20 +98,6 @@ export interface IYPareoAdresse {
   commune: IYPareoCommune;
   pays: IYPareoPays;
 }
-
-export interface IYPareoRib {
-  codeRib: number;
-  codeBanque?: string;
-  codeGuichet?: string;
-  numeroCompte?: string;
-  cleRib?: string;
-  ibanPays?: string;
-  bic?: string;
-  titulaire?: string;
-  ibanCpt?: string;
-  isAutorisePrelvement?: boolean;
-}
-
 export interface IYPareoSite {
   codeSite: number;
   nomFormeJuridique?: string | null;
@@ -166,9 +114,13 @@ export interface IYPareoSite {
   nomDirigeant?: string | null;
   prenomDirigeant?: string | null;
   plusUtilise: number;
-  listeRib: IYPareoRib[];
 }
 
+export interface IYPareoFormation {
+  codeFormation: number;
+  nomFormation: string;
+  abregeFormation?: string;
+}
 export interface IYPareoNationalite {
   codeNationalite: number;
   nomNationalite: string;
@@ -181,4 +133,7 @@ export interface IYPareoSitesResponse {
 
 export interface IYPareoNationalitesResponse {
   [key: string]: IYPareoNationalite;
+}
+export interface IYPareoFormationsResponse {
+  [key: string]: IYPareoFormation;
 }

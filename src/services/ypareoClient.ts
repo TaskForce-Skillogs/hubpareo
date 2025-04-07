@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { IYPareoSite, IYPareoNationalite, IYPareoSitesResponse, IYPareoNationalitesResponse } from '../types';
+import { IYPareoSite, IYPareoNationalite, IYPareoFormation, IYPareoSitesResponse, IYPareoNationalitesResponse, IYPareoFormationsResponse } from '../types';
 import e from 'express';
 
 dotenv.config();
@@ -14,6 +14,7 @@ class YPareoClient {
   private token: string;
   private sites: IYPareoSitesResponse = {};
   private nationalites: IYPareoNationalitesResponse = {};
+  private formations: IYPareoFormationsResponse = {};
   private initialized = false;
 
   constructor() {
@@ -29,22 +30,24 @@ class YPareoClient {
     if (this.initialized) return;
     
     try {
-      const [sitesResponse, nationalitesResponse] = await Promise.all([
+      const [sitesResponse, nationalitesResponse, formationsResponse] = await Promise.all([
         this.fetchSites(),
-        this.fetchNationalites()
+        this.fetchNationalites(),
+        this.fetchFormations() 
       ]);
       
       this.sites = sitesResponse || {};
       this.nationalites = nationalitesResponse || {};
+      this.formations = formationsResponse || {}; 
       
       this.initialized = true;
       const sitesCount = Object.keys(this.sites).length;
       const nationalitesCount = Object.keys(this.nationalites).length;
+      const formationsCount = Object.keys(this.formations).length;
       
-      console.log(`Données de référence YPareo chargées: ${sitesCount} sites, ${nationalitesCount} nationalités`);
+      console.log(`Données de référence YPareo chargées: ${sitesCount} sites, ${nationalitesCount} nationalités, ${formationsCount} formations`);
     } catch (error) {
       console.error('Échec de l\'initialisation du client YPareo:', error);
-
       this.initialized = true;
     }
   }
@@ -73,6 +76,11 @@ class YPareoClient {
     return this.makeRequest<IYPareoNationalitesResponse>('/r/v1/nationalites');
   }
 
+  async fetchFormations(): Promise<IYPareoFormationsResponse | null> {
+    return this.makeRequest<IYPareoFormationsResponse>('/r/v1/formations');
+  }
+
+
   getSiteIdByName(siteName: string ): string {
     
     for (const key in this.sites) {
@@ -82,6 +90,20 @@ class YPareoClient {
       }
     }
     return "";
+  }
+
+  getFormationIdByName(formationName: string | undefined, defaultId = '123'): string {
+  
+    if (!formationName || Object.keys(this.formations).length === 0) return defaultId;
+    
+    for (const key in this.formations) {
+      const formation = this.formations[key];
+      if (formation.nomFormation.toLowerCase().includes(formationName.toLowerCase())) {
+        return formation.codeFormation.toString();
+      }
+    }
+    
+    return defaultId;
   }
 
   getNationalityIdByCountry(countryCodeOrName: string): string {
@@ -100,6 +122,10 @@ class YPareoClient {
 
   getNationalities(): IYPareoNationalite[] {
     return Object.values(this.nationalites);
+  }
+
+  getFormations(): IYPareoFormation[] {
+    return Object.values(this.formations) ;
   }
 }
 
