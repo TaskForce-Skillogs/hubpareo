@@ -9,22 +9,21 @@ import {
 export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Promise<IYPareoCandidat> {
   
   const siteId = await getSiteId(hubspotData.site);
-  const nationalityId = await getNationalityId(hubspotData.nationality || hubspotData.country || hubspotData.pays);
-  const formationId = await getFormationId(hubspotData.formation_souhaitee);
+  const nationalityId = await getNationalityId(hubspotData.nationalite);
+  const formationId = await getFormationId(hubspotData.campus_souhaite);
   const civiliteCode = mapGenderToCode(hubspotData.civilite);
   
   return {
     "idSite": siteId,
     "codeCiviliteApprenant": civiliteCode,
-    "nomApprenant": hubspotData.lastname,
-    "prenomApprenant": hubspotData.firstname,
+    "nomApprenant": hubspotData.nom,
+    "prenomApprenant": hubspotData.prenom,
     "idNationalite": nationalityId,
-    "adresse1Appr": hubspotData.address,
-    "cpAppr": hubspotData.zip,
+    "adresse1Appr": hubspotData.adresse_postale,
     "villeAppr": hubspotData.city,
-    "tel1Appr": hubspotData.phone,
+    "tel1Appr": hubspotData.telephone_portable,
     "emailAppr": hubspotData.email,
-    "dateNaissance": hubspotData.birthdate,
+    "dateNaissance": hubspotData.dateNaissance,
     "idFormationSouhait1": formationId,
   };
 }
