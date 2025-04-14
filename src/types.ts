@@ -30,7 +30,7 @@ export interface IYPareoCandidat {
   adresse2Appr?: string;
   adresse3Appr?: string;
   adresse4Appr?: string;
-  cpAppr: string;
+  cpAppr?: string;
   villeAppr: string;
   idPays?: string;
   tel1Appr: string;
