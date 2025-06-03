@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { IYPareoSite, IYPareoNationalite, IYPareoFormation, IYPareoSitesResponse, IYPareoNationalitesResponse, IYPareoFormationsResponse } from '../types';
+import { IYPareoSite, IYPareoNationalite, IYPareoFormation, IYPareoSitesResponse, IYPareoNationalitesResponse, IYPareoFormationsResponse, IYPareoStatut, IYPareoAnnee, IYPareoPays } from '../types';
 import e from 'express';
 
 dotenv.config();
@@ -16,6 +16,13 @@ class YPareoClient {
   private nationalites: IYPareoNationalitesResponse = {};
   private formations: IYPareoFormationsResponse = {};
   private initialized = false;
+  private statuts: { [key: string]: IYPareoStatut } = {};
+  private annees: { [key: string]: IYPareoAnnee } = {};
+  private pays: { [key: string]: IYPareoPays } = {};
+  private originesScolaires: { [key: string]: any } = {}; // Add new property
+  private diplomesObtenus: { [key: string]: any } = {}; // Add new property
+  private etablissementsScolaires: { [key: string]: any } = {}; // Add new property
+
 
   constructor() {
     this.apiUrl = YPAREO_BASE_URL || '';
@@ -30,25 +37,44 @@ class YPareoClient {
     if (this.initialized) return;
     
     try {
-      const [sitesResponse, nationalitesResponse, formationsResponse] = await Promise.all([
+      const [sitesResponse, nationalitesResponse, formationsResponse, statutsResponse, anneesResponse, paysResponse, originesScolairesResponse, diplomesObtenusResponse, etablissementsScolairesResponse] = await Promise.all([
         this.fetchSites(),
         this.fetchNationalites(),
-        this.fetchFormations() 
+        this.fetchFormations(),
+        this.fetchStatuts(),
+        this.fetchAnnees(),
+        this.fetchPays(),
+        this.fetchOriginesScolaires(),
+        this.fetchDiplomesObtenus(),
+        this.fetchEtablissementsScolaires()
       ]);
-      
+
       this.sites = sitesResponse || {};
       this.nationalites = nationalitesResponse || {};
-      this.formations = formationsResponse || {}; 
+      this.formations = formationsResponse || {};
+      this.statuts = statutsResponse || {};
+      this.annees = anneesResponse || {};
+      this.pays = paysResponse || {};
+      this.originesScolaires = originesScolairesResponse || {};
+      this.diplomesObtenus = diplomesObtenusResponse || {};
+      this.etablissementsScolaires = etablissementsScolairesResponse || {};
+      
       
       this.initialized = true;
       const sitesCount = Object.keys(this.sites).length;
       const nationalitesCount = Object.keys(this.nationalites).length;
       const formationsCount = Object.keys(this.formations).length;
-      
-      console.log(`Données de référence YPareo chargées: ${sitesCount} sites, ${nationalitesCount} nationalités, ${formationsCount} formations`);
+      const statutsCount = Object.keys(this.statuts).length;
+      const anneesCount = Object.keys(this.annees).length;
+      const paysCount = Object.keys(this.pays).length;
+      const originesScolairesCount = Object.keys(this.originesScolaires).length;
+      const diplomesObtenusCount = Object.keys(this.diplomesObtenus).length;
+      const etablissementsScolairesCount = Object.keys(this.etablissementsScolaires).length;
+
+      console.log(`Données de référence YPareo chargées: ${sitesCount} sites, ${nationalitesCount} nationalités, ${formationsCount} formations, ${statutsCount} statuts, ${anneesCount} années, ${paysCount} pays, ${originesScolairesCount} origines scolaires, ${diplomesObtenusCount} diplômes obtenus, ${etablissementsScolairesCount} établissements scolaires`);
     } catch (error) {
       console.error('Échec de l\'initialisation du client YPareo:', error);
-      this.initialized = true;
+      this.initialized = true; // Set to true to avoid repeated initialization attempts
     }
   }
 
@@ -79,10 +105,33 @@ class YPareoClient {
   async fetchFormations(): Promise<IYPareoFormationsResponse | null> {
     return this.makeRequest<IYPareoFormationsResponse>('/r/v1/formations');
   }
+  
+  async fetchStatuts(): Promise<any | null> {
+    return this.makeRequest<any>('/r/v1/statuts');
+  }
+  
+  async fetchAnnees(): Promise<any | null> {
+    return this.makeRequest<any>('/r/v1/annees');
+  }
 
+async fetchPays(): Promise<{ [key: string]: IYPareoPays } | null> {
+  return this.makeRequest<{ [key: string]: IYPareoPays }>('/r/v1/pays');
+}
+
+async fetchOriginesScolaires(): Promise<{ [key: string]: any } | null> {
+    return this.makeRequest<{ [key: string]: any }>('/r/v1/origines-scolaires');
+  }
+
+  async fetchDiplomesObtenus(): Promise<{ [key: string]: any } | null> {
+    return this.makeRequest<{ [key: string]: any }>('/r/v1/diplomes-obtenus');
+  }
+
+  async fetchEtablissementsScolaires(): Promise<{ [key: string]: any } | null> {
+    return this.makeRequest<{ [key: string]: any }>('/r/v1/etablissements-origine');
+  }
 
   getSiteIdByName(siteName: string ): string {
-    
+
     for (const key in this.sites) {
       const site = this.sites[key];
       if (site.nomSite.toLowerCase().includes(siteName.toLowerCase())) {
@@ -113,7 +162,112 @@ class YPareoClient {
         return nationality.codeNationalite.toString();
       }
     }
-    return "876" // =inconnu dans la base d'Ypareo
+    return "876"
+  }
+
+  getStatusIdByName(statusName: string | undefined, defaultId = ''): string {
+    if (!statusName || Object.keys(this.statuts).length === 0) return defaultId;
+    
+    for (const key in this.statuts) {
+      const statut = this.statuts[key];
+      if (statut.nomStatut.toLowerCase().includes(statusName.toLowerCase())) {
+        return statut.codeStatut.toString();
+      }
+    }
+    
+    return defaultId;
+  }
+
+  getYearIdByName(yearName: string | undefined, defaultId = ''): string {
+    if (!yearName || Object.keys(this.annees).length === 0) return defaultId;
+    
+    for (const key in this.annees) {
+      const annee = this.annees[key];
+      if (annee.nomAnnee.toLowerCase().includes(yearName.toLowerCase())) {
+        return annee.codeAnnee.toString();
+      }
+    }
+    
+    return defaultId;
+  }
+
+  getCountryIdByName(countryName: string | undefined): string {
+  if (!countryName || Object.keys(this.pays).length === 0) {
+    return "250";
+  }
+  
+  const normalizedCountryName = countryName.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .trim();
+  
+  for (const key in this.pays) {
+    const pays = this.pays[key];
+    const normalizedNomPays = pays.nomPays.toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .trim();
+    
+    if (normalizedNomPays === normalizedCountryName) {
+      return pays.codePays.toString();
+    }
+  }
+  
+  for (const key in this.pays) {
+    const pays = this.pays[key];
+    const normalizedNomPays = pays.nomPays.toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .trim();
+    
+    if (normalizedNomPays.includes(normalizedCountryName) || 
+        normalizedCountryName.includes(normalizedNomPays)) {
+      return pays.codePays.toString();
+    }
+  }
+  
+  console.warn(`Country "${countryName}" not found in YPareo database, defaulting to France (45)`);
+  return "45";
+}
+
+  getIdOrigineScolaireByName(origine: string | undefined, defaultId = '82699'): string {
+    if (!origine || Object.keys(this.originesScolaires).length === 0) return defaultId;
+    
+    for (const key in this.originesScolaires) {
+      const origineScolaire = this.originesScolaires[key];
+      if (origineScolaire.nom?.toLowerCase().includes(origine.toLowerCase()) ||
+          origineScolaire.nomOrigine?.toLowerCase().includes(origine.toLowerCase())) {
+        return origineScolaire.code?.toString() || origineScolaire.codeOrigine?.toString() || key;
+      }
+    }
+    
+    return defaultId;
+  }
+
+  getIdDiplomeObtenuByName(diplome: string | undefined, defaultId = '0'): string {
+    if (!diplome || Object.keys(this.diplomesObtenus).length === 0) return defaultId;
+    
+    for (const key in this.diplomesObtenus) {
+      const diplomeObtenu = this.diplomesObtenus[key];
+      // Adjust property name based on your API response structure
+      if (diplomeObtenu.nom?.toLowerCase().includes(diplome.toLowerCase()) ||
+          diplomeObtenu.nomDiplome?.toLowerCase().includes(diplome.toLowerCase())) {
+        return diplomeObtenu.code?.toString() || diplomeObtenu.codeDiplome?.toString() || key;
+      }
+    }
+    
+    return defaultId;
+  }
+  getIdEtablissementScolaireByName(etablissement: string | undefined, defaultId = '0'): string {
+    if (!etablissement || Object.keys(this.etablissementsScolaires).length === 0) return defaultId;
+    
+    for (const key in this.etablissementsScolaires) {
+      const etablissementScolaire = this.etablissementsScolaires[key];
+      // Adjust property name based on your API response structure
+      if (etablissementScolaire.nom?.toLowerCase().includes(etablissement.toLowerCase()) ||
+          etablissementScolaire.nomEtablissement?.toLowerCase().includes(etablissement.toLowerCase())) {
+        return etablissementScolaire.code?.toString() || etablissementScolaire.codeEtablissement?.toString() || key;
+      }
+    }
+    
+    return defaultId;
   }
 
   getSites(): IYPareoSite[] {
@@ -127,6 +281,10 @@ class YPareoClient {
   getFormations(): IYPareoFormation[] {
     return Object.values(this.formations) ;
   }
+
+  getPays(): IYPareoPays[] {
+  return Object.values(this.pays);
+}
 }
 
 const ypareoClient = new YPareoClient();
