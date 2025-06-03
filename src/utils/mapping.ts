@@ -17,6 +17,7 @@ export function mapGenderToCode(gender?: string): number {
   }
 }
 
+
 export async function getSiteId(siteName?: string): Promise<string> {
   if (!siteName) return "";
   
@@ -36,4 +37,46 @@ export async function getFormationId(formationName?: string): Promise<string> {
   
   await ypareoClient.initialize();
   return ypareoClient.getFormationIdByName(formationName);
+}
+
+export async function getStatusId(statusName?: string): Promise<string> {
+  if (!statusName) return "";
+  
+  await ypareoClient.initialize();
+  return ypareoClient.getStatusIdByName(statusName);
+}
+
+export async function getYearId(yearName?: string): Promise<string> {
+  if (!yearName) return "";
+
+  await ypareoClient.initialize();
+  return ypareoClient.getYearIdByName(yearName);
+}
+
+export async function getCountryId(countryName?: string): Promise<string> {
+  if (!countryName) return "250"; // Default to France
+  
+  await ypareoClient.initialize();
+  return ypareoClient.getCountryIdByName(countryName);
+}
+
+export async function getIdOrigineScolaireByName(origine?: string): Promise<string> {
+  if (!origine) return "0";
+  
+  await ypareoClient.initialize();
+  return ypareoClient.getIdOrigineScolaireByName(origine);
+}
+
+export async function getIdDiplomeObtenuByName(diplome?: string): Promise<string> {
+  if (!diplome) return "0";
+
+  await ypareoClient.initialize();
+  return ypareoClient.getIdDiplomeObtenuByName(diplome);
+}
+
+export async function getIdEtablissementScolaireByName(etablissement?: string): Promise<string> {
+  if (!etablissement) return "0";
+
+  await ypareoClient.initialize();
+  return ypareoClient.getIdEtablissementScolaireByName(etablissement);
 }

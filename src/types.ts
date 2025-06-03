@@ -134,3 +134,30 @@ export interface IYPareoNationalitesResponse {
 export interface IYPareoFormationsResponse {
   [key: string]: IYPareoFormation;
 }
+export interface IYPareoStatut {
+  codeStatut: number;
+  nomStatut: string;
+  abregeStatut: string;
+}
+
+export interface IYPareoAnnee {
+  codeAnnee: number;
+  nomAnnee: string;
+  abregeAnnee: string;
+}
+
+export interface IYPareoPays {
+  codePays: number;
+  nomPays: string;
+  formatCp?: string;
+  formatSiret?: string;
+  formatTel?: string;
+  indicatifTel?: string;
+  isProvince?: number;
+  isSiretObligatoire?: number;
+  libelleSiret?: string;
+  nomenclPays?: number;
+  nomenclPaysInsee?: string;
+  abrege?: string;
+  plusUtilise?: number;
+}
