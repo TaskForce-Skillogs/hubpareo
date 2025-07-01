@@ -11,6 +11,37 @@ export interface IHubSpotWebhook {
   lastname: string;
   firstname: string;
   birthDate: string;
+  // New properties added in recent commits
+  status: string;
+  year: string;
+  pays: string;
+  origine_scolaire: string;
+  diplome_obtenu: string;
+  etablissement_scolaire: string;
+  ine: string;
+  nom_jeune_fille: string;
+  adresse_postale: string;
+  adresse2: string;
+  code_postal_: string;
+  city: string;
+  telephone_portable: string;
+  pays_parents: string;
+  civilite_representant_legal: string;
+  nom_du_parent_1: string;
+  prenom_du_parent_1: string;
+  adresse_parents: string;
+  adresse2_representant_legal: string;
+  code_postal_parents: string;
+  ville_parents: string;
+  telephone_du_parent_1: string;
+  email_du_parent_1: string;
+  dateNaissance: string;
+  ville_de_naissance: string;
+  departement_de_naissance: string;
+  paysNaissance: string;
+  travailleur_handicape: boolean;
+  is_mobile: boolean;
+  permis_conduire: boolean;
   [key: string]: any;
 }
 

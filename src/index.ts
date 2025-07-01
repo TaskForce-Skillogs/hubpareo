@@ -33,17 +33,26 @@ app.post('/webhook', async (req: Request, res: Response) => {
     console.log('Données transformées pour YPareo:', JSON.stringify(ypareoCandidat, null, 2));
     
     if (process.env.NODE_ENV === 'production') {
-      const response = await axios.post(
-        `${YPAREO_BASE_URL}/r/v1/preinscription/candidat`,
-        ypareoCandidat,
-        {
-          headers: {
-            'X-Auth-Token': YPAREO_TOKEN as string,
-            'Content-Type': 'application/json'
+      try {
+        const response = await axios.post(
+          `${YPAREO_BASE_URL}/r/v1/preinscription/candidat`,
+          ypareoCandidat,
+          {
+            headers: {
+              'X-Auth-Token': YPAREO_TOKEN as string,
+              'Content-Type': 'application/json'
+            }
           }
-        }
-      );
-      console.log('Candidat créé dans YPareo:', response.data);
+        );
+        console.log('✅ Candidat créé dans YPareo avec succès:', response.data);
+      } catch (ypareoError: any) {
+        console.error('❌ Erreur YPareo API:');
+        console.error('Status:', ypareoError.response?.status);
+        console.error('Status Text:', ypareoError.response?.statusText);
+        console.error('Response Data:', JSON.stringify(ypareoError.response?.data, null, 2));
+        console.error('Response Headers:', ypareoError.response?.headers);
+        throw ypareoError;
+      }
     } else {
       console.log('Mode développement: Ignorer l\'appel API réel à YPareo');
     }

@@ -29,7 +29,7 @@ export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Pro
   const paysIdRepLegal = await getCountryId(hubspotData.pays_parents);
   const civiliteCodeRepLegal = mapGenderToCode(hubspotData.civilite_representant_legal);
   
-  return {
+  const transformedData: any = {
     "idSite": siteId,
     "idStatut": statusId,
     "idAnnee": yearId,
@@ -67,8 +67,18 @@ export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Pro
     "idOrigineScolaire": idOrigineScolaire,
     "idDiplomeObtenu": idDiplomeObtenu,
     "idEtablissementScolaire": idEtablissementScolaire,
-    "isTravailleurHandicape": hubspotData.travailleur_handicape,
-    "isMobile": hubspotData.is_mobile,
-    "isPermisConduire": hubspotData.permis_conduire,
   };
+
+  // Only add boolean fields if they are true, using integer values
+  if (hubspotData.travailleur_handicape === true) {
+    transformedData.isTravailleurHandicape = 1;
+  }
+  if (hubspotData.is_mobile === true) {
+    transformedData.isMobile = 1;
+  }
+  if (hubspotData.permis_conduire === true) {
+    transformedData.isPermisConduire = 1;
+  }
+
+  return transformedData;
 }

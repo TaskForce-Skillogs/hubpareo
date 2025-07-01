@@ -61,7 +61,7 @@ export async function getCountryId(countryName?: string): Promise<string> {
 }
 
 export async function getIdOrigineScolaireByName(origine?: string): Promise<string> {
-  if (!origine) return "0";
+  if (!origine) return "82699"; // Use a default valid ID instead of "0"
   
   await ypareoClient.initialize();
   return ypareoClient.getIdOrigineScolaireByName(origine);

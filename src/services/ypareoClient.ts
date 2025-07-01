@@ -193,7 +193,7 @@ async fetchOriginesScolaires(): Promise<{ [key: string]: any } | null> {
 
   getCountryIdByName(countryName: string | undefined): string {
   if (!countryName || Object.keys(this.pays).length === 0) {
-    return "250";
+    return "250"; // Default to France
   }
   
   const normalizedCountryName = countryName.toLowerCase()
@@ -223,8 +223,8 @@ async fetchOriginesScolaires(): Promise<{ [key: string]: any } | null> {
     }
   }
   
-  console.warn(`Country "${countryName}" not found in YPareo database, defaulting to France (45)`);
-  return "45";
+  console.warn(`Country "${countryName}" not found in YPareo database, defaulting to France (250)`);
+  return "250"; // Changed from "45" to be consistent
 }
 
   getIdOrigineScolaireByName(origine: string | undefined, defaultId = '82699'): string {
