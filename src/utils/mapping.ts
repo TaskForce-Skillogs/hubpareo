@@ -17,6 +17,26 @@ export function mapGenderToCode(gender?: string): number {
   }
 }
 
+export function mapTravailleurHandicapeToCode(travailleurHandicape?: boolean): number {
+  if (travailleurHandicape === true) {
+    return 1;
+  }
+  return 0;
+}
+
+export function mapIsMobileToCode(isMobile?: boolean): number {
+  if (isMobile === true) {
+    return 1;
+  }
+  return 0;
+}
+
+export function mapPermisConduireToCode(permisConduire?: boolean): number {
+  if (permisConduire === true) {
+    return 1;
+  }
+  return 0;
+}
 
 export async function getSiteId(siteName?: string): Promise<string> {
   if (!siteName) return "";
@@ -33,7 +53,7 @@ export async function getNationalityId(countryName?: string): Promise<string> {
 }
 
 export async function getFormationId(formationName?: string): Promise<string> {
-    if (!formationName) return "123"; 
+    if (!formationName) return ""; 
   
   await ypareoClient.initialize();
   return ypareoClient.getFormationIdByName(formationName);
@@ -54,28 +74,28 @@ export async function getYearId(yearName?: string): Promise<string> {
 }
 
 export async function getCountryId(countryName?: string): Promise<string> {
-  if (!countryName) return "250"; // Default to France
+  if (!countryName) return ""; 
   
   await ypareoClient.initialize();
   return ypareoClient.getCountryIdByName(countryName);
 }
 
 export async function getIdOrigineScolaireByName(origine?: string): Promise<string> {
-  if (!origine) return "82699"; // Use a default valid ID instead of "0"
+  if (!origine) return "";
   
   await ypareoClient.initialize();
   return ypareoClient.getIdOrigineScolaireByName(origine);
 }
 
 export async function getIdDiplomeObtenuByName(diplome?: string): Promise<string> {
-  if (!diplome) return "0";
+  if (!diplome) return "";
 
   await ypareoClient.initialize();
   return ypareoClient.getIdDiplomeObtenuByName(diplome);
 }
 
 export async function getIdEtablissementScolaireByName(etablissement?: string): Promise<string> {
-  if (!etablissement) return "0";
+  if (!etablissement) return "";
 
   await ypareoClient.initialize();
   return ypareoClient.getIdEtablissementScolaireByName(etablissement);

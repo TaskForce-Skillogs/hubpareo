@@ -9,7 +9,10 @@ import {
   getCountryId,
   getIdOrigineScolaireByName,
   getIdDiplomeObtenuByName,
-  getIdEtablissementScolaireByName
+  getIdEtablissementScolaireByName,
+  mapTravailleurHandicapeToCode,
+  mapIsMobileToCode,
+  mapPermisConduireToCode
 } from './utils/mapping';
 
 export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Promise<IYPareoCandidat> {
@@ -25,11 +28,17 @@ export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Pro
   const idDiplomeObtenu = await getIdDiplomeObtenuByName(hubspotData.diplome_obtenu);
   const idEtablissementScolaire = await getIdEtablissementScolaireByName(hubspotData.etablissement_scolaire);
 
-
   const paysIdRepLegal = await getCountryId(hubspotData.pays_parents);
-  const civiliteCodeRepLegal = mapGenderToCode(hubspotData.civilite_representant_legal);
+  let civiliteCodeRepLegal;
+  if (hubspotData.civilite_representant_legal) {
+    civiliteCodeRepLegal = mapGenderToCode(hubspotData.civilite_representant_legal);
+  }
+
+  const isTravailleurHandicape = mapTravailleurHandicapeToCode(hubspotData.travailleur_handicape);
+  const isMobile = mapIsMobileToCode(hubspotData.is_mobile);
+  const isPermisConduire = mapPermisConduireToCode(hubspotData.permis_conduire);
   
-  const transformedData: any = {
+  return {
     "idSite": siteId,
     "idStatut": statusId,
     "idAnnee": yearId,
@@ -41,7 +50,7 @@ export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Pro
     "idNationalite": nationalityId,
     "adresse1Appr": hubspotData.adresse_postale,
     "adresse2Appr": hubspotData.adresse2,
-    "cpAppr": hubspotData.code_postal_,
+    "cpAppr": hubspotData.code_postal_.toString(),
     "villeAppr": hubspotData.city,
     "idPays": paysIdAppr,
     "tel1Appr": hubspotData.telephone_portable,
@@ -67,18 +76,8 @@ export async function transformToYPareoFormat(hubspotData: IHubSpotWebhook): Pro
     "idOrigineScolaire": idOrigineScolaire,
     "idDiplomeObtenu": idDiplomeObtenu,
     "idEtablissementScolaire": idEtablissementScolaire,
+    "isTravailleurHandicape": isTravailleurHandicape,
+    "isMobile": isMobile,
+    "isPermisConduire": isPermisConduire,
   };
-
-  // Only add boolean fields if they are true, using integer values
-  if (hubspotData.travailleur_handicape === true) {
-    transformedData.isTravailleurHandicape = 1;
-  }
-  if (hubspotData.is_mobile === true) {
-    transformedData.isMobile = 1;
-  }
-  if (hubspotData.permis_conduire === true) {
-    transformedData.isPermisConduire = 1;
-  }
-
-  return transformedData;
 }
