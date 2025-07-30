@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - YPAREO_BASE_URL=${YPAREO_BASE_URL}
       - YPAREO_TOKEN=${YPAREO_TOKEN}
       - PORT=3000

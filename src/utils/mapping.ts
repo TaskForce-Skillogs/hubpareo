@@ -46,14 +46,14 @@ export async function getSiteId(siteName?: string): Promise<string> {
 }
 
 export async function getNationalityId(countryName?: string): Promise<string> {
-  if (!countryName) return "876"; // Default unknown nationality ID in YPareo
+  if (!countryName) return "";
   
   await ypareoClient.initialize();
   return ypareoClient.getNationalityIdByCountry(countryName);
 }
 
 export async function getFormationId(formationName?: string): Promise<string> {
-    if (!formationName) return ""; 
+  if (!formationName) return ""; 
   
   await ypareoClient.initialize();
   return ypareoClient.getFormationIdByName(formationName);

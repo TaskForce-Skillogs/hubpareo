@@ -141,7 +141,7 @@ async fetchOriginesScolaires(): Promise<{ [key: string]: any } | null> {
     return "";
   }
 
-  getFormationIdByName(formationName: string | undefined, defaultId = '123'): string {
+  getFormationIdByName(formationName: string | undefined, defaultId = '488168'): string {
   
     if (!formationName || Object.keys(this.formations).length === 0) return defaultId;
     
