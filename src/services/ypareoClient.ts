@@ -170,7 +170,7 @@ async fetchOriginesScolaires(): Promise<{ [key: string]: any } | null> {
     
     for (const key in this.statuts) {
       const statut = this.statuts[key];
-      if (statut.nomStatut.toLowerCase().includes(statusName.toLowerCase())) {
+      if (statut.abregeStatut.toLowerCase().includes(statusName.toLowerCase())) {
         return statut.codeStatut.toString();
       }
     }
